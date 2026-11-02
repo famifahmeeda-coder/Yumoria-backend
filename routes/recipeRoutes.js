@@ -1,5 +1,6 @@
 
 const express = require("express")
+const { protect } = require("../middlewares/authMiddleware")
 
 const router = express.Router()
 
@@ -17,10 +18,10 @@ router.get("/", getRecipes)
 
 router.get("/:id", getRecipeById)
 
-router.post("/", createRecipe)
+router.post("/", protect, createRecipe)
 
-router.put("/:id", updateRecipe)
+router.put("/:id", protect, updateRecipe)
 
-router.delete("/:id", deleteRecipe)
+router.delete("/:id", protect, deleteRecipe)
 
 module.exports = router
