@@ -1,6 +1,6 @@
 const generateRecipeSuggestions = async (req, res) => {
     try {
-        const { ingredients } = req.body;
+        const { ingredients } = req.body
 
         
         if (!ingredients || (Array.isArray(ingredients) && ingredients.length === 0)) {
@@ -55,4 +55,4 @@ const generateRecipeSuggestions = async (req, res) => {
     }
 };
 
-module.exports = { generateRecipeSuggestions };
+module.exports = { generateRecipeSuggestions }

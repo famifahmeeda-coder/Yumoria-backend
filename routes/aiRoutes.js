@@ -1,11 +1,11 @@
-const express = require("express");
+const express = require("express")
 
-const router = express.Router();
+const router = express.Router()
 
-const { generateRecipeSuggestions } = require("../controllers/aiController");
+const { generateRecipeSuggestions } = require("../controllers/aiController")
 
-const { protect } = require("../middlewares/authMiddleware");
+const { protect } = require("../middlewares/authMiddleware")
 
-router.post("/suggestions", protect, generateRecipeSuggestions);
+router.post("/suggestions", protect, generateRecipeSuggestions)
 
-module.exports = router;
+module.exports = router
