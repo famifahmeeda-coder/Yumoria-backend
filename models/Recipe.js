@@ -50,6 +50,22 @@ const recipeSchema = new mongoose.Schema(
             default: ""
         },
 
+        ratings: [
+            {
+                user: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: "User",
+                    required: true
+                },
+                value: {
+                    type: Number,
+                    required: true,
+                    min: 1,
+                    max: 5
+                }
+            }
+        ],
+
         rating: {
             type: Number,
             default: 0

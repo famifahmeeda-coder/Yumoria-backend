@@ -9,7 +9,8 @@ const {
     getRecipeById,
     createRecipe,
     updateRecipe,
-    deleteRecipe
+    deleteRecipe,
+    rateRecipe
 } = require("../controllers/recipeController")
 
 
@@ -17,6 +18,7 @@ router.get("/", getRecipes)
 
 
 router.get("/:id", getRecipeById)
+router.post("/:id/rating", protect, rateRecipe)
 
 router.post("/", protect, createRecipe)
 

@@ -112,10 +112,69 @@ const deleteRecipe = async (req, res) => {
     }
 }
 
+const rateRecipe = async (req, res) => {
+    try {
+        const ratingValue = Number(req.body.rating)
+
+        if (!Number.isInteger(ratingValue) || ratingValue < 1 || ratingValue > 5) {
+            return res.status(400).json({
+                success: false,
+                message: "Rating must be a number between 1 and 5"
+            })
+        }
+
+        const recipe = await Recipe.findById(req.params.id)
+
+        if (!recipe) {
+            return res.status(404).json({
+                success: false,
+                message: "Recipe not found"
+            })
+        }
+
+        const existingRating = recipe.ratings.find(
+            (item) => item.user.toString() === req.user.id
+        )
+
+        if (existingRating) {
+            existingRating.value = ratingValue
+        } else {
+            recipe.ratings.push({
+                user: req.user.id,
+                value: ratingValue
+            })
+        }
+
+        const total = recipe.ratings.reduce(
+            (sum, item) => sum + item.value,
+            0
+        )
+
+        recipe.rating = Number((total / recipe.ratings.length).toFixed(1))
+
+        await recipe.save()
+
+        res.status(200).json({
+            success: true,
+            message: "Recipe rated successfully",
+            data: {
+                rating: recipe.rating,
+                ratings: recipe.ratings
+            }
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
+
 module.exports = {
     getRecipes,
     getRecipeById,
     createRecipe,
     updateRecipe,
-    deleteRecipe
+    deleteRecipe,
+    rateRecipe
 }
