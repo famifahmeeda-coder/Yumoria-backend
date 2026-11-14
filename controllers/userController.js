@@ -1,3 +1,4 @@
+
 const User = require("../models/User")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
@@ -15,9 +16,7 @@ const registerUser = async (req, res) => {
             })
         }
 
-
         const hashedPassword = await bcrypt.hash(password, 10)
-
 
         const user = await User.create({
             name,
@@ -48,7 +47,6 @@ const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body
 
-        
         const user = await User.findOne({ email })
 
         if (!user) {
@@ -58,7 +56,6 @@ const loginUser = async (req, res) => {
             })
         }
 
-    
         const isMatch = await bcrypt.compare(password, user.password)
 
         if (!isMatch) {
@@ -93,7 +90,75 @@ const loginUser = async (req, res) => {
     }
 }
 
+
+const getUserProfile = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id).select("-password")
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            })
+        }
+
+        res.status(200).json({
+            success: true,
+            data: user
+        })
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
+
+
+const updateUserProfile = async (req, res) => {
+    try {
+        const { name, bio, profileImage } = req.body
+
+        const user = await User.findById(req.user.id)
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            })
+        }
+
+        if (name !== undefined) user.name = name
+        if (bio !== undefined) user.bio = bio
+        if (profileImage !== undefined) user.profileImage = profileImage
+
+        await user.save()
+
+        res.status(200).json({
+            success: true,
+            message: "Profile updated successfully",
+            data: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                bio: user.bio,
+                profileImage: user.profileImage
+            }
+        })
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
+
+
 module.exports = {
     registerUser,
-    loginUser
+    loginUser,
+    getUserProfile,
+    updateUserProfile
 }
