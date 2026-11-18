@@ -110,6 +110,18 @@ The backend runs on:
 http://localhost:5000
 ```
 
+## Live Deployment
+
+**Backend URL:** https://yumoria-backend.onrender.com
+
+**Frontend URL:** https://recipe-sharing-platform-gamma-drab.vercel.app
+
+**GitHub Backend:** https://github.com/famifahmeeda-coder/Yumoria-backend
+
+**GitHub Frontend:** https://github.com/famifahmeeda-coder/Recipe-Sharing-Platform
+
+
+
 ## API Routes
 
 ### User Authentication
